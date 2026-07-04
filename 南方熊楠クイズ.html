@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南方熊楠クイズ 〜知の巨人を探検しよう〜</title>
+<style>
+:root {
+  --dark: #0d1f0a;
+  --forest: #1a3d15;
+  --green: #2d6a27;
+  --green-mid: #3d8c35;
+  --green-light: #5ab84a;
+  --gold: #c9a227;
+  --gold-light: #e8c547;
+  --cream: #fdf6e3;
+  --parchment: #f5e6c0;
+  --brown: #4a2c0a;
+  --text: #1a1a1a;
+  --correct: #27ae60;
+  --incorrect: #c0392b;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'Georgia', serif;
+  background: var(--dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 0;
+}
+
+.container {
+  max-width: 700px;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--cream);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ===== ヒーローヘッダー ===== */
+.hero {
+  background: linear-gradient(180deg, #0d1f0a 0%, #1a3d15 60%, #0d1f0a 100%);
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 60%, rgba(201,162,39,0.15) 0%, transparent 70%);
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 32px 24px 0;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: var(--dark);
+  font-size: 0.72rem;
+  font-weight: bold;
+  letter-spacing: 0.15em;
+  padding: 4px 16px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+.hero h1 {
+  color: var(--gold-light);
+  font-size: 2rem;
+  font-weight: bold;
+  line-height: 1.3;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.6);
+}
+.hero h1 .ruby {
+  display: block;
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.88);
+  letter-spacing: 0.2em;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  margin-bottom: 4px;
+}
+.hero-subtitle {
+  color: rgba(255,255,255,0.92);
+  font-size: 0.88rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* 写真エリア */
+.hero-photo-area {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 20px;
+  padding: 0 20px;
+}
+.hero-photo-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+.hero-photo-wrap img {
+  width: 140px;
+  height: 175px;
+  object-fit: cover;
+  object-position: top center;
+  border-radius: 8px 8px 0 0;
+  border: 3px solid var(--gold);
+  border-bottom: none;
+  box-shadow: 0 -8px 32px rgba(201,162,39,0.3), 0 0 0 1px rgba(201,162,39,0.2);
+  display: block;
+}
+.hero-photo-wrap .photo-glow {
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px 12px 0 0;
+  background: radial-gradient(ellipse, rgba(201,162,39,0.2) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-photo-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  background: rgba(0,0,0,0.7);
+  color: rgba(255,255,255,0.8);
+  font-size: 0.68rem;
+  text-align: center;
+  padding: 3px;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  border-top: 1px solid var(--gold);
+}
+.hero-quote {
+  flex: 1;
+  text-align: left;
+  padding-bottom: 16px;
+}
+.hero-quote blockquote {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  border-left: 3px solid var(--gold);
+  padding-left: 14px;
+  margin-bottom: 10px;
+  font-style: italic;
+}
+.hero-quote .quote-attr {
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  display: block;
+}
+.hero-stats {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.hero-stat {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(201,162,39,0.3);
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.8);
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+.hero-stat strong { color: var(--gold-light); }
+
+/* 波形の区切り */
+.hero-wave {
+  display: block;
+  width: 100%;
+  height: 40px;
+  background: var(--cream);
+  clip-path: ellipse(55% 100% at 50% 100%);
+  margin-top: -1px;
+}
+
+/* ===== 画面切り替え ===== */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ===== レベル選択 ===== */
+.level-section {
+  padding: 24px 20px 32px;
+}
+.section-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.section-title h2 {
+  font-size: 1.25rem;
+  color: var(--forest);
+  margin-bottom: 4px;
+}
+.section-title p {
+  font-size: 0.85rem;
+  color: #666;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  line-height: 1.6;
+}
+
+.level-grid { display: flex; flex-direction: column; gap: 10px; }
+
+.level-btn {
+  background: white;
+  border: 2px solid #d4e8d0;
+  border-radius: 14px;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.25s;
+  overflow: hidden;
+  display: flex;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+.level-btn:hover {
+  border-color: var(--green-mid);
+  box-shadow: 0 6px 20px rgba(45,106,39,0.2);
+  transform: translateY(-2px);
+}
+.level-btn .lv-accent {
+  background: linear-gradient(180deg, var(--forest), var(--green));
+  width: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 14px 8px;
+  flex-shrink: 0;
+}
+.level-btn .lv-num {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.level-btn .lv-stars {
+  font-size: 0.65rem;
+  margin-top: 4px;
+  letter-spacing: -1px;
+}
+.level-btn .lv-info {
+  padding: 12px 16px;
+  flex: 1;
+}
+.level-btn .lv-title {
+  font-size: 1.02rem;
+  font-weight: bold;
+  color: var(--brown);
+  margin-bottom: 3px;
+}
+.level-btn .lv-target {
+  font-size: 0.78rem;
+  color: #888;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  margin-bottom: 2px;
+}
+.level-btn .lv-desc {
+  font-size: 0.8rem;
+  color: #555;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  line-height: 1.4;
+}
+.level-btn:hover .lv-title { color: var(--forest); }
+.level-btn .lv-arrow {
+  display: flex;
+  align-items: center;
+  padding-right: 14px;
+  color: #bbb;
+  font-size: 1.2rem;
+}
+.level-btn:hover .lv-arrow { color: var(--green-mid); }
+
+/* ===== クイズ画面 ===== */
+.quiz-wrap { padding: 20px 20px 32px; }
+
+.quiz-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+.quiz-lv-tag {
+  background: var(--forest);
+  color: var(--gold-light);
+  font-size: 0.78rem;
+  font-weight: bold;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+.quiz-num {
+  font-size: 0.88rem;
+  color: #888;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  font-weight: bold;
+}
+
+.progress-bar {
+  background: #e0e0e0;
+  border-radius: 10px;
+  height: 6px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.progress-fill {
+  background: linear-gradient(to right, var(--green), var(--gold));
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.5s ease;
+}
+
+.q-box {
+  background: white;
+  border-radius: 14px;
+  padding: 20px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  border-left: 5px solid var(--green-mid);
+}
+.q-label {
+  font-size: 0.72rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  color: var(--green-mid);
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.q-text {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--brown);
+  font-weight: bold;
+}
+
+.choices { display: flex; flex-direction: column; gap: 9px; margin-bottom: 14px; }
+
+.c-btn {
+  background: white;
+  border: 2px solid #d4e8d0;
+  border-radius: 10px;
+  padding: 13px 16px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  line-height: 1.5;
+  transition: all 0.18s;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.c-btn .c-mark {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  color: #aaa;
+}
+.c-btn:hover:not(:disabled) {
+  background: #f0f8ee;
+  border-color: var(--green-mid);
+  transform: translateX(4px);
+  box-shadow: 0 2px 8px rgba(45,106,39,0.15);
+}
+.c-btn:hover:not(:disabled) .c-mark {
+  border-color: var(--green-mid);
+  color: var(--green-mid);
+}
+.c-btn.correct {
+  background: #e8f5e9;
+  border-color: var(--correct);
+}
+.c-btn.correct .c-mark {
+  background: var(--correct);
+  border-color: var(--correct);
+  color: white;
+}
+.c-btn.incorrect {
+  background: #fdecea;
+  border-color: var(--incorrect);
+}
+.c-btn.incorrect .c-mark {
+  background: var(--incorrect);
+  border-color: var(--incorrect);
+  color: white;
+}
+.c-btn:disabled { cursor: default; }
+
+.fb-box {
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  display: none;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.fb-box.correct { background: #e8f5e9; border-left: 5px solid var(--correct); color: #1b5e20; }
+.fb-box.incorrect { background: #fdecea; border-left: 5px solid var(--incorrect); color: #7f0000; }
+.fb-title { font-weight: bold; font-size: 0.95rem; margin-bottom: 6px; }
+
+.next-btn {
+  width: 100%;
+  background: linear-gradient(135deg, var(--forest), var(--green-mid));
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  cursor: pointer;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  transition: all 0.2s;
+  display: none;
+  letter-spacing: 0.05em;
+}
+.next-btn:hover { opacity: 0.9; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+
+/* ===== 結果画面 ===== */
+.result-hero {
+  background: linear-gradient(180deg, var(--dark) 0%, var(--forest) 100%);
+  padding: 32px 24px 24px;
+  text-align: center;
+  position: relative;
+}
+.result-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 80%, rgba(201,162,39,0.2) 0%, transparent 70%);
+}
+.result-icon-wrap {
+  position: relative;
+  z-index: 1;
+  font-size: 3rem;
+  margin-bottom: 8px;
+  animation: popIn 0.5s cubic-bezier(0.175,0.885,0.32,1.275);
+}
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.result-label {
+  position: relative;
+  z-index: 1;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.85rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  margin-bottom: 6px;
+}
+.result-score-big {
+  position: relative;
+  z-index: 1;
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: var(--gold-light);
+  text-shadow: 0 2px 16px rgba(201,162,39,0.5);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.result-score-big span { font-size: 1.2rem; color: rgba(255,255,255,0.88); }
+.result-badge-wrap {
+  position: relative;
+  z-index: 1;
+  margin-top: 12px;
+}
+.result-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: var(--dark);
+  border-radius: 24px;
+  padding: 8px 24px;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  box-shadow: 0 4px 16px rgba(201,162,39,0.5);
+}
+
+.result-body { padding: 24px 20px 32px; }
+
+.result-msg {
+  background: white;
+  border-radius: 14px;
+  padding: 16px 18px;
+  font-size: 0.9rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  border-left: 5px solid var(--green-mid);
+}
+
+/* 記念館ブロック */
+.museum-block {
+  background: linear-gradient(135deg, var(--dark), var(--forest));
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+}
+.museum-block-header {
+  background: var(--gold);
+  padding: 10px 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.museum-block-header span {
+  font-size: 0.95rem;
+  font-weight: bold;
+  color: var(--dark);
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+
+.museum-photo-row {
+  display: flex;
+  gap: 0;
+}
+.museum-photo-col {
+  width: 130px;
+  flex-shrink: 0;
+  position: relative;
+}
+.museum-photo-col img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.museum-photo-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  color: rgba(255,255,255,0.7);
+  font-size: 0.62rem;
+  padding: 4px 6px;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+}
+.museum-info-col {
+  flex: 1;
+  padding: 14px 16px;
+}
+.museum-info-col p {
+  color: rgba(255,255,255,0.85);
+  font-size: 0.82rem;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  line-height: 1.65;
+  margin-bottom: 10px;
+}
+.museum-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.museum-detail-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.8);
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  line-height: 1.4;
+}
+.museum-detail-row .d-icon { flex-shrink: 0; }
+.museum-detail-row a {
+  color: var(--gold-light);
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+/* 地図 */
+.map-wrap {
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+}
+.map-header {
+  background: var(--forest);
+  color: rgba(255,255,255,0.9);
+  font-size: 0.82rem;
+  font-weight: bold;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  padding: 7px 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.map-wrap iframe {
+  width: 100%;
+  height: 220px;
+  border: none;
+  display: block;
+}
+
+.result-btns { display: flex; flex-direction: column; gap: 10px; }
+.btn-retry {
+  background: linear-gradient(135deg, var(--forest), var(--green-mid));
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 12px rgba(45,106,39,0.3);
+}
+.btn-retry:hover { opacity: 0.9; transform: translateY(-1px); }
+.btn-home {
+  background: white;
+  color: var(--forest);
+  border: 2px solid var(--green-mid);
+  border-radius: 12px;
+  padding: 12px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-home:hover { background: #f0f8ee; }
+
+.footer {
+  text-align: center;
+  font-size: 0.72rem;
+  color: #aaa;
+  padding: 12px;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  border-top: 1px solid #eee;
+}
+</style>
+<style>
+/* ================================================================
+   知的でおしゃれなデザイン v2 — Botanical Library Theme
+   ================================================================ */
+
+/* カラーパレット上書き */
+:root {
+  --dark:        #1a2e24;
+  --forest:      #3d6454;
+  --green:       #5a8a72;
+  --green-mid:   #6e9a80;
+  --green-light: #9abfaa;
+  --gold:        #c9a46a;
+  --gold-light:  #e8d5a3;
+  --cream:       #faf8f3;
+  --parchment:   #f2ede2;
+  --brown:       #3c2e1c;
+  --text:        #2c3238;
+  --correct:     #5b9970;
+  --incorrect:   #b05a5a;
+  --sage-deep:   #1e3d30;
+  --sage-dark:   #3d6454;
+  --charcoal:    #2c3238;
+  --muted:       #7a8490;
+}
+
+/* ボディ */
+body {
+  background: linear-gradient(160deg, #1a2e24 0%, #2a4a38 60%, #1e3828 100%) fixed;
+  font-family: 'Hiragino Mincho ProN', 'Yu Mincho', Georgia, serif;
+}
+
+/* コンテナ */
+.container {
+  background: var(--cream);
+  box-shadow: 0 0 80px rgba(0,0,0,0.35);
+}
+
+/* ヒーロー */
+.hero {
+  background: linear-gradient(175deg, #141e1a 0%, #1e3428 50%, #274838 100%);
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 65%, rgba(201,164,106,0.16) 0%, transparent 50%),
+    radial-gradient(ellipse at 78% 25%, rgba(110,154,128,0.14) 0%, transparent 45%);
+}
+.hero-badge { background: rgba(201,164,106,0.85); color: #1a2e24; }
+.hero h1   { color: var(--gold-light); }
+.hero-wave { background: var(--cream); }
+
+/* セクションタイトル */
+.section-title h2 {
+  color: var(--sage-dark);
+  font-size: 1.3rem;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+  background: none;
+  -webkit-text-fill-color: unset;
+}
+.section-title p { color: var(--muted); font-size: 0.85rem; }
+.level-section { padding: 28px 20px 36px; background: var(--cream); }
+
+/* ===== レベルボタン 上書き ===== */
+.level-btn {
+  background: #fff;
+  border: 1.5px solid #ddd;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.055);
+  transition: transform 0.24s ease, box-shadow 0.24s ease;
+  overflow: hidden;
+}
+.level-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 32px rgba(0,0,0,0.13);
+}
+
+/* L1: 薄いセージグリーン */
+.level-btn[data-lv="1"] { background: #f2f7f4; border-color: #c0d8c8; }
+.level-btn[data-lv="1"] .lv-accent { background: linear-gradient(165deg, #335848, #4a7860); }
+.level-btn[data-lv="1"] .lv-title  { color: #1e3d30; }
+.level-btn[data-lv="1"] .lv-desc   { color: #4d6e5a; }
+
+/* L2: アンティークアンバー */
+.level-btn[data-lv="2"] { background: #faf5ec; border-color: #ddd0b0; }
+.level-btn[data-lv="2"] .lv-accent { background: linear-gradient(165deg, #6a4e1e, #947030); }
+.level-btn[data-lv="2"] .lv-title  { color: #4a3010; }
+.level-btn[data-lv="2"] .lv-desc   { color: #7a5a28; }
+
+/* L3: ダスティブルー */
+.level-btn[data-lv="3"] { background: #f0f4f8; border-color: #b8cce0; }
+.level-btn[data-lv="3"] .lv-accent { background: linear-gradient(165deg, #2e4e6e, #446080); }
+.level-btn[data-lv="3"] .lv-title  { color: #1a3350; }
+.level-btn[data-lv="3"] .lv-desc   { color: #365470; }
+
+/* L4: ソフトモーブ */
+.level-btn[data-lv="4"] { background: #f4f0f8; border-color: #ccc0dc; }
+.level-btn[data-lv="4"] .lv-accent { background: linear-gradient(165deg, #4a2e62, #6e4888); }
+.level-btn[data-lv="4"] .lv-title  { color: #321848; }
+.level-btn[data-lv="4"] .lv-desc   { color: #5a3878; }
+
+/* L5: ソフトインディゴ */
+.level-btn[data-lv="5"] { background: #eef0f8; border-color: #b0bade; }
+.level-btn[data-lv="5"] .lv-accent { background: linear-gradient(165deg, #2a3870, #3a52a0); }
+.level-btn[data-lv="5"] .lv-title  { color: #101838; }
+.level-btn[data-lv="5"] .lv-desc   { color: #384070; }
+
+/* ===== クイズ画面 共通 ===== */
+.q-box {
+  background: rgba(255,255,255,0.95);
+  border-left: 4px solid var(--sage-dark);
+  box-shadow: 0 3px 18px rgba(0,0,0,0.07);
+}
+.q-label { color: var(--sage-dark); font-size: 0.72rem; letter-spacing: 0.14em; }
+.q-text  { color: var(--charcoal); font-size: 1.05rem; line-height: 1.8; }
+
+.c-btn {
+  background: rgba(255,255,255,0.92);
+  border: 1.5px solid #dde4dc;
+  border-radius: 10px;
+  color: var(--charcoal);
+}
+.c-btn:hover:not(:disabled) {
+  background: #f0f5f2;
+  border-color: var(--green-mid);
+  transform: translateX(3px);
+}
+.c-btn .c-mark { border-color: #cdd4cc; color: #9a9e9a; }
+.c-btn:hover:not(:disabled) .c-mark { border-color: var(--green-mid); color: var(--green-mid); }
+
+.c-btn.correct   { background: #edf5f0; border-color: #5b9970; }
+.c-btn.correct   .c-mark { background: #5b9970; border-color: #5b9970; color: #fff; }
+.c-btn.incorrect { background: #f8eeee; border-color: #b05a5a; }
+.c-btn.incorrect .c-mark { background: #b05a5a; border-color: #b05a5a; color: #fff; }
+
+.fb-box.correct   { background: #edf5f0; border-left: 4px solid #5b9970; color: #2c3238; }
+.fb-box.incorrect { background: #f8eeee; border-left: 4px solid #b05a5a; color: #2c3238; }
+
+.next-btn {
+  background: linear-gradient(135deg, #3d6454, #5a8a72);
+  box-shadow: 0 4px 18px rgba(61,100,84,0.22);
+}
+
+/* ===== クイズ画面：レベル別背景 ===== */
+
+/* L1: ボタニカルセージ */
+.container.quiz-lv-1 {
+  background-color: #f2f7f4;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cellipse cx='60' cy='200' rx='40' ry='18' fill='%23b8d4c4' opacity='0.32'/%3E%3Cpath d='M28 200 Q28 148 60 140 Q92 148 92 200' fill='%236e9a80' opacity='0.2'/%3E%3Crect x='56' y='200' width='8' height='42' rx='4' fill='%23b8d4c4' opacity='0.35'/%3E%3Ccircle cx='50' cy='162' r='3.5' fill='%23f2f7f4' opacity='0.8'/%3E%3Ccircle cx='64' cy='152' r='2.5' fill='%23f2f7f4' opacity='0.8'/%3E%3Ccircle cx='72' cy='164' r='2' fill='%23f2f7f4' opacity='0.7'/%3E%3Cellipse cx='220' cy='240' rx='30' ry='13' fill='%23b8d4c4' opacity='0.25'/%3E%3Cpath d='M196 240 Q196 207 220 200 Q244 207 244 240' fill='%236e9a80' opacity='0.17'/%3E%3Crect x='217' y='240' width='6' height='30' rx='3' fill='%23b8d4c4' opacity='0.28'/%3E%3Cellipse cx='150' cy='90' rx='28' ry='10' fill='%234d7060' opacity='0.07' transform='rotate(-18 150 90)'/%3E%3Cellipse cx='110' cy='65' rx='22' ry='8' fill='%234d7060' opacity='0.06' transform='rotate(14 110 65)'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* L2: アンティーク温かみ */
+.container.quiz-lv-2 {
+  background-color: #faf5ec;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cellipse cx='120' cy='170' rx='50' ry='20' fill='%23ddd0b0' opacity='0.38'/%3E%3Cpath d='M82 170 Q76 116 120 106 Q164 116 158 170' fill='%23c9a46a' opacity='0.25'/%3E%3Ccircle cx='103' cy='131' r='4.5' fill='%23faf5ec' opacity='0.9'/%3E%3Ccircle cx='122' cy='121' r='3.5' fill='%23faf5ec' opacity='0.9'/%3E%3Ccircle cx='138' cy='132' r='3' fill='%23faf5ec' opacity='0.8'/%3E%3Crect x='115' y='170' width='10' height='36' rx='5' fill='%23e8d5a3' opacity='0.42'/%3E%3Cellipse cx='40' cy='50' rx='22' ry='8' fill='%23c9a46a' opacity='0.1' transform='rotate(-10 40 50)'/%3E%3C/svg%3E");
+  background-size: 240px 240px;
+}
+
+/* L3: 粘菌・研究の海 */
+.container.quiz-lv-3 {
+  background-color: #f0f4f8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='280' height='280'%3E%3Ccircle cx='70' cy='80' r='36' fill='%23b8cce0' opacity='0.18'/%3E%3Ccircle cx='100' cy='108' r='24' fill='%237891b0' opacity='0.14'/%3E%3Ccircle cx='52' cy='112' r='20' fill='%23a0bcd4' opacity='0.13'/%3E%3Cpath d='M70 80 Q85 94 100 108' stroke='%237891b0' stroke-width='5' fill='none' opacity='0.16' stroke-linecap='round'/%3E%3Cpath d='M70 80 Q61 96 52 112' stroke='%237891b0' stroke-width='4' fill='none' opacity='0.14' stroke-linecap='round'/%3E%3Ccircle cx='200' cy='190' r='30' fill='%23b8cce0' opacity='0.14'/%3E%3Ccircle cx='224' cy='212' r='20' fill='%237891b0' opacity='0.12'/%3E%3Cpath d='M200 190 Q212 201 224 212' stroke='%237891b0' stroke-width='4' fill='none' opacity='0.14' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 280px 280px;
+}
+
+/* L4: ライブラリー */
+.container.quiz-lv-4 {
+  background-color: #f4f0f8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='160'%3E%3Crect x='12' y='32' width='18' height='62' rx='2' fill='%239b86b0' opacity='0.17'/%3E%3Crect x='32' y='22' width='22' height='72' rx='2' fill='%237a6492' opacity='0.14'/%3E%3Crect x='56' y='36' width='16' height='58' rx='2' fill='%23b4a0c8' opacity='0.15'/%3E%3Crect x='74' y='26' width='20' height='68' rx='2' fill='%239b86b0' opacity='0.12'/%3E%3Crect x='96' y='32' width='18' height='62' rx='2' fill='%237a6492' opacity='0.14'/%3E%3Crect x='116' y='22' width='24' height='72' rx='2' fill='%23b4a0c8' opacity='0.12'/%3E%3Crect x='142' y='38' width='16' height='56' rx='2' fill='%239b86b0' opacity='0.13'/%3E%3Crect x='10' y='95' width='156' height='4' rx='2' fill='%234a2e62' opacity='0.09'/%3E%3C/svg%3E");
+  background-size: 200px 160px;
+}
+
+/* L5: ソフトインディゴ（明るい） */
+.container.quiz-lv-5 {
+  background-color: #eef0f8;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Ccircle cx='35' cy='30' r='2' fill='%23b8c4e8' opacity='0.6'/%3E%3Ccircle cx='100' cy='18' r='2.5' fill='%23a0b0e0' opacity='0.5'/%3E%3Ccircle cx='170' cy='42' r='1.5' fill='%23b8c4e8' opacity='0.45'/%3E%3Ccircle cx='220' cy='15' r='2' fill='%23a0b0e0' opacity='0.55'/%3E%3Ccircle cx='15' cy='90' r='1.2' fill='%23b8c4e8' opacity='0.35'/%3E%3Ccircle cx='140' cy='72' r='2' fill='%23a0b0e0' opacity='0.45'/%3E%3Ccircle cx='50' cy='150' r='2.5' fill='%23a0b0e0' opacity='0.45'/%3E%3Ccircle cx='180' cy='130' r='1.8' fill='%23b8c4e8' opacity='0.4'/%3E%3Ccircle cx='230' cy='80' r='1.2' fill='%23b8c4e8' opacity='0.35'/%3E%3Ccircle cx='130' cy='200' r='2.5' fill='%23a0b0e0' opacity='0.35'/%3E%3Ccircle cx='200' cy='185' r='2' fill='%23b8c4e8' opacity='0.4'/%3E%3Ccircle cx='80' cy='222' r='1.2' fill='%23a0b0e0' opacity='0.35'/%3E%3Ccircle cx='125' cy='125' r='50' stroke='%234a5a9a' stroke-width='1' fill='none' opacity='0.15'/%3E%3Ccircle cx='125' cy='125' r='32' stroke='%234a5a9a' stroke-width='1' fill='none' opacity='0.12'/%3E%3Ccircle cx='125' cy='125' r='16' stroke='%234a5a9a' stroke-width='1.5' fill='none' opacity='0.1'/%3E%3C/svg%3E");
+  background-size: 250px 250px;
+}
+
+/* プログレスバー */
+.quiz-lv-1 .progress-fill { background: linear-gradient(to right, #335848, #6e9a80); }
+.quiz-lv-2 .progress-fill { background: linear-gradient(to right, #8a6020, #c9a46a); }
+.quiz-lv-3 .progress-fill { background: linear-gradient(to right, #2e4e6e, #7891b0); }
+.quiz-lv-4 .progress-fill { background: linear-gradient(to right, #4a2e62, #9b86b0); }
+.quiz-lv-5 .progress-fill { background: linear-gradient(to right, #2a3870, #5a72c0); }
+
+/* LV タグ */
+.quiz-lv-1 .quiz-lv-tag { background: #335848; color: #c8e0d4; }
+.quiz-lv-2 .quiz-lv-tag { background: #7a5020; color: #f0ddb8; }
+.quiz-lv-3 .quiz-lv-tag { background: #2e4e6e; color: #b8cce0; }
+.quiz-lv-4 .quiz-lv-tag { background: #4a2e62; color: #d4c0e8; }
+.quiz-lv-5 .quiz-lv-tag { background: #3a52a0; color: #eef0f8; }
+
+/* 結果画面 */
+.result-hero { background: linear-gradient(165deg, #1a2e24, #2d4a38); }
+.result-score-big { color: var(--gold-light); }
+.result-badge { background: rgba(201,164,106,0.12); border: 1px solid var(--gold); color: var(--gold-light); font-family: 'Hiragino Kaku Gothic Pro', sans-serif; }
+.result-hero .kumagusu-meter-label { color: rgba(255,255,255,0.7); }
+.result-hero .kumagusu-meter-pct   { color: var(--gold-light); }
+.result-hero .max-streak-info      { color: rgba(255,200,100,0.85); }
+.btn-retry { background: transparent; border: 2px solid var(--sage-dark); color: var(--sage-dark); font-family: 'Hiragino Kaku Gothic Pro', sans-serif; }
+.btn-retry:hover { background: var(--sage-dark); color: white; }
+.btn-home  { background: var(--sage-dark); color: white; font-family: 'Hiragino Kaku Gothic Pro', sans-serif; }
+.btn-home:hover { background: var(--sage-deep); }
+
+/* ミュージアムブロック */
+.museum-block { border-left: 4px solid var(--gold); background: var(--parchment); }
+.museum-block-header { background: #f0e8d8; color: #4a3010; border-bottom-color: var(--gold); }
+.museum-info-col p { color: #3c2e1c; }
+.museum-detail-row { color: #5a4020; }
+.museum-detail-row a { color: #3a52a0; }
+
+/* ミュージアムSNS・リンク */
+.museum-sns-wrap { margin-top: 16px; padding-top: 14px; border-top: 1px solid #e0d0b0; }
+.museum-sns-title { font-size: 0.78rem; color: #4a3018; letter-spacing: 0.05em; margin-bottom: 10px; font-weight: bold; text-align: center; }
+.museum-qr-row { display: flex; gap: 12px; margin-bottom: 14px; }
+.museum-qr-card { flex: 1; background: white; border-radius: 10px; padding: 12px 8px 10px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.08); border: 1px solid #e8dcc8; }
+.museum-qr-card img { width: 100%; max-width: 110px; height: auto; border-radius: 4px; display: block; margin: 0 auto; }
+.museum-qr-icon { font-size: 1.1rem; margin-bottom: 4px; }
+.museum-qr-label { font-size: 0.78rem; color: #5a4020; font-weight: bold; margin-top: 6px; }
+.museum-qr-handle { font-size: 0.65rem; color: #5a4030; margin-top: 2px; }
+.museum-link-row { display: flex; flex-direction: column; gap: 8px; }
+.museum-link-btn { display: block; text-align: center; padding: 11px 6px; border-radius: 10px; font-size: 0.84rem; font-weight: bold; text-decoration: none; transition: all 0.2s; font-family: 'Hiragino Kaku Gothic Pro', sans-serif; }
+.museum-link-shop { background: linear-gradient(135deg, #c9a46a, #e8c87a); color: #2c1e08; box-shadow: 0 2px 8px rgba(201,164,106,0.3); }
+.museum-link-blog { background: linear-gradient(135deg, #5a8a70, #7aaa88); color: white; box-shadow: 0 2px 8px rgba(90,138,112,0.3); }
+.museum-link-info { background: linear-gradient(135deg, #5a6a8a, #7a8aaa); color: white; box-shadow: 0 2px 8px rgba(90,106,138,0.3); }
+.museum-link-btn:hover { opacity: 0.88; transform: translateY(-2px); }
+
+/* フッター */
+.footer { background: #222e26; color: #adc8b8; font-family: 'Hiragino Kaku Gothic Pro', sans-serif; }
+
+/* クイズ画面ラッパー */
+.quiz-wrap { background: transparent; }
+
+/* 次のレベルへボタン */
+.btn-next-level {
+  background: linear-gradient(135deg, #c9a46a, #e8c87a);
+  color: #2c1e08;
+  border: none;
+  border-radius: 12px;
+  padding: 14px;
+  font-size: 1rem;
+  font-weight: bold;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 16px rgba(201,164,106,0.4);
+  width: 100%;
+}
+.btn-next-level:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(201,164,106,0.5); }
+
+/* ===== イントロ画面 ===== */
+#screen-intro { padding: 0; }
+.intro-wrap { padding: 28px 20px 40px; max-width: 680px; margin: 0 auto; }
+.intro-episode-label {
+  display: inline-block;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  text-indent: 0.08em;
+  color: var(--gold);
+  border: 1px solid var(--gold);
+  border-radius: 4px;
+  padding: 5px 14px;
+  margin-bottom: 10px;
+  font-family: 'Georgia', serif;
+  font-weight: bold;
+}
+.intro-title {
+  font-size: 1.45rem;
+  font-weight: bold;
+  color: var(--sage-dark);
+  line-height: 1.4;
+  margin-bottom: 18px;
+  font-family: 'Hiragino Mincho Pro', 'Georgia', serif;
+}
+.intro-story {
+  font-size: 0.95rem;
+  line-height: 1.9;
+  color: #3c3020;
+  background: #faf7f0;
+  border-left: 3px solid var(--gold);
+  padding: 16px 18px;
+  border-radius: 0 8px 8px 0;
+  margin-bottom: 16px;
+}
+.intro-hook {
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--sage-dark);
+  text-align: left;
+  padding: 14px 16px;
+  border-top: 1px dashed var(--gold);
+  border-bottom: 1px dashed var(--gold);
+  margin-bottom: 20px;
+  line-height: 1.8;
+}
+.intro-teaser {
+  font-size: 0.85rem;
+  color: #6a5a38;
+  background: rgba(201,164,106,0.1);
+  border-radius: 8px;
+  padding: 10px 14px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+.intro-start-wrap {
+  margin: 8px 0 12px;
+  text-align: center;
+}
+.intro-start-label {
+  font-size: 0.8rem;
+  color: #5a4a28;
+  letter-spacing: 0.1em;
+  margin-bottom: 10px;
+}
+.intro-start-btn {
+  width: 100%;
+  padding: 20px 16px;
+  background: linear-gradient(135deg, #d4813a, #e8a840);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  cursor: pointer;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+  transition: all 0.2s;
+  box-shadow: 0 6px 24px rgba(212,129,58,0.45);
+  position: relative;
+  overflow: hidden;
+}
+.intro-start-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+  border-radius: 16px;
+}
+.intro-start-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(212,129,58,0.55); }
+.intro-start-btn:active { transform: translateY(0); }
+.intro-back-btn {
+  width: 100%;
+  padding: 10px;
+  background: transparent;
+  color: #4a3a20;
+  border: 1px solid #c8b890;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  font-family: 'Hiragino Kaku Gothic Pro', sans-serif;
+  transition: all 0.2s;
+}
+.intro-back-btn:hover { background: #f5f0e8; }
+
+/* ===== ストリークバッジ ===== */
+.streak-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  background: linear-gradient(135deg, #e07a30, #e8b040);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-left: 8px;
+  animation: streakPop 0.3s ease;
+  vertical-align: middle;
+}
+@keyframes streakPop {
+  0%{ transform: scale(0.7); opacity: 0; }
+  70%{ transform: scale(1.15); }
+  100%{ transform: scale(1); opacity: 1; }
+}
+.streak-msg {
+  text-align: center;
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #c06820;
+  padding: 6px 0 2px;
+  animation: streakPop 0.3s ease;
+}
+
+/* ===== フィードバック内トリビア ===== */
+.fb-trivia {
+  margin-top: 14px;
+  padding: 10px 14px;
+  background: rgba(201,164,106,0.12);
+  border-radius: 8px;
+  border-left: 3px solid var(--gold);
+  font-size: 0.82rem;
+  color: #5a4020;
+  line-height: 1.7;
+  display: none;
+}
+.fb-trivia-label {
+  font-size: 0.72rem;
+  color: #6a5020;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+/* ===== 熊楠度メーター ===== */
+.kumagusu-meter-wrap {
+  margin: 12px 0 4px;
+  text-align: center;
+}
+.kumagusu-meter-label {
+  font-size: 0.8rem;
+  color: #7a6a4a;
+  margin-bottom: 6px;
+  letter-spacing: 0.05em;
+}
+.kumagusu-meter-bar {
+  width: 100%;
+  height: 12px;
+  background: rgba(0,0,0,0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 4px;
+}
+.kumagusu-meter-fill {
+  height: 100%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #6e9a80, #c9a46a);
+  transition: width 1s ease;
+  width: 0%;
+}
+.kumagusu-meter-pct {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--sage-dark);
+  font-family: 'Georgia', serif;
+}
+.max-streak-info {
+  font-size: 0.8rem;
+  color: #a07840;
+  margin-top: 8px;
+}
+
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- ヒーローヘッダー（全画面共通） -->
+  <div class="hero">
+    <div class="hero-inner">
+      <h1>
+        <span class="ruby">MINAKATA KUMAGUSU QUIZ</span>
+        南方熊楠クイズ
+      </h1>
+      <p class="hero-subtitle">〜 知の巨人を探検しよう 〜</p>
+      <div class="hero-photo-area">
+        <div class="hero-photo-wrap">
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/1/12/Minakata_Kumagusu.JPG"
+            alt="南方熊楠"
+            onerror="this.parentElement.style.display='none'"
+          >
+          <div class="photo-glow"></div>
+          <div class="hero-photo-caption">南方熊楠（1867〜1941）</div>
+        </div>
+        <div class="hero-quote">
+          <blockquote>「宇宙の真理は<br>森の一隅に宿る」</blockquote>
+          <span class="quote-attr">— 南方熊楠</span>
+          <div class="hero-stats">
+            <div class="hero-stat"><strong>18+</strong> か国語習得</div>
+            <div class="hero-stat">Nature誌 <strong>51</strong> 本</div>
+            <div class="hero-stat">粘菌標本 <strong>4,000+</strong> 点</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <span class="hero-wave"></span>
+  </div>
+
+  <!-- ===== レベル選択 ===== -->
+  <div id="screen-level" class="screen active">
+    <div class="level-section">
+      <div class="section-title">
+        <h2>難易度を選んでください</h2>
+        <p>各レベル100問プールから毎回10問をランダム出題。<br>何度でも違う問題で挑戦できます！</p>
+      </div>
+      <div class="level-grid">
+        <button class="level-btn" data-lv="1" onclick="startQuiz(0)">
+          <div class="lv-accent"><div class="lv-num">1</div><div class="lv-stars">⭐</div></div>
+          <div class="lv-info">
+            <div class="lv-title">はじめて熊楠</div>
+
+            <div class="lv-desc">熊楠ってどんな人？生まれた場所や好きなものを探検しよう</div>
+          </div>
+          <div class="lv-arrow">›</div>
+        </button>
+        <button class="level-btn" data-lv="2" onclick="startQuiz(1)">
+          <div class="lv-accent"><div class="lv-num">2</div><div class="lv-stars">⭐⭐</div></div>
+          <div class="lv-info">
+            <div class="lv-title">熊楠の大冒険</div>
+
+            <div class="lv-desc">世界へ飛び出した熊楠！大英博物館や Nature 誌の話</div>
+          </div>
+          <div class="lv-arrow">›</div>
+        </button>
+        <button class="level-btn" data-lv="3" onclick="startQuiz(2)">
+          <div class="lv-accent"><div class="lv-num">3</div><div class="lv-stars">⭐⭐⭐</div></div>
+          <div class="lv-info">
+            <div class="lv-title">知の探求者</div>
+
+            <div class="lv-desc">南方マンダラ・神社合祀反対・粘菌研究の深い世界へ</div>
+          </div>
+          <div class="lv-arrow">›</div>
+        </button>
+        <button class="level-btn" data-lv="4" onclick="startQuiz(3)">
+          <div class="lv-accent"><div class="lv-num">4</div><div class="lv-stars">⭐⭐⭐⭐</div></div>
+          <div class="lv-info">
+            <div class="lv-title">熊楠通への道</div>
+
+            <div class="lv-desc">昭和天皇・田辺時代・エコロジーの先駆者としての熊楠</div>
+          </div>
+          <div class="lv-arrow">›</div>
+        </button>
+        <button class="level-btn" data-lv="5" onclick="startQuiz(4)">
+          <div class="lv-accent"><div class="lv-num">5</div><div class="lv-stars">⭐⭐⭐⭐⭐</div></div>
+          <div class="lv-info">
+            <div class="lv-title">熊楠博士</div>
+
+            <div class="lv-desc">南方マンダラの哲学・粘菌学名・書簡集の学術的意義まで</div>
+          </div>
+          <div class="lv-arrow">›</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== レベルイントロ ===== -->
+  <div id="screen-intro" class="screen">
+    <div class="intro-wrap">
+      <div class="intro-episode-label" id="intro-episode-label"></div>
+      <div class="intro-title" id="intro-title"></div>
+      <div class="intro-story" id="intro-story"></div>
+      <div class="intro-hook" id="intro-hook"></div>
+      <div class="intro-teaser" id="intro-teaser"></div>
+      <div class="intro-start-wrap">
+        <div class="intro-start-label">▼ 準備ができたらここを押してね ▼</div>
+        <button class="intro-start-btn" id="intro-start-btn" onclick="proceedToQuiz()">▶ クイズ スタート！</button>
+      </div>
+      <button class="intro-back-btn" onclick="goHome()">← レベル選択に戻る</button>
+    </div>
+  </div>
+
+  <!-- ===== クイズ画面 ===== -->
+  <div id="screen-quiz" class="screen">
+    <div class="quiz-wrap">
+      <div class="quiz-topbar">
+        <span class="quiz-lv-tag" id="quiz-lv-tag"></span>
+        <span class="quiz-num" id="quiz-num"></span>
+        <span class="streak-badge" id="streak-badge" style="display:none">🔥 <span id="streak-num">0</span>連続！</span>
+      </div>
+      <div class="streak-msg" id="streak-msg" style="display:none"></div>
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="q-box">
+        <div class="q-label">Q U E S T I O N</div>
+        <div class="q-text" id="q-text"></div>
+      </div>
+      <div class="choices" id="choices"></div>
+      <div class="fb-box" id="fb-box">
+        <div class="fb-title" id="fb-title"></div>
+        <div id="fb-text"></div>
+        <div class="fb-trivia" id="fb-trivia">
+          <div class="fb-trivia-label">💡 もっと知る・熊楠トリビア</div>
+          <div id="fb-trivia-text"></div>
+        </div>
+      </div>
+      <button class="next-btn" id="next-btn" onclick="nextQuestion()">次の問題へ →</button>
+    </div>
+  </div>
+
+  <!-- ===== 結果画面 ===== -->
+  <div id="screen-result" class="screen">
+    <div class="result-hero">
+      <div class="result-icon-wrap" id="result-icon"></div>
+      <div class="result-label">あなたのスコア</div>
+      <div class="result-score-big"><span id="result-score-num"></span><span> / 10</span></div>
+      <div class="kumagusu-meter-wrap">
+        <div class="kumagusu-meter-label">熊楠度</div>
+        <div class="kumagusu-meter-bar"><div class="kumagusu-meter-fill" id="kumagusu-fill"></div></div>
+        <div class="kumagusu-meter-pct" id="kumagusu-pct"></div>
+        <div class="max-streak-info" id="max-streak-info"></div>
+      </div>
+      <div class="result-badge-wrap"><span class="result-badge" id="result-badge"></span></div>
+    </div>
+    <div class="result-body">
+      <div class="result-msg" id="result-msg"></div>
+
+      <!-- 記念館ブロック -->
+      <div class="museum-block">
+        <div class="museum-block-header">
+          <span>🏛️ 南方熊楠記念館へ行ってみよう！</span>
+        </div>
+        <div class="museum-photo-row">
+          <div class="museum-photo-col">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/1/12/Minakata_Kumagusu.JPG"
+              alt="南方熊楠"
+              onerror="this.parentElement.style.display='none'"
+            >
+            <div class="museum-photo-overlay">©Wikimedia Commons</div>
+          </div>
+          <div class="museum-info-col">
+            <p>直筆資料・粘菌標本4,000点以上を所蔵。クイズで学んだ熊楠の世界を本物の資料で体感してください！</p>
+            <div class="museum-detail">
+              <div class="museum-detail-row"><span class="d-icon">📍</span><span>〒649-2211 和歌山県西牟婁郡白浜町3601-1</span></div>
+              <div class="museum-detail-row"><span class="d-icon">🕘</span><span>9:00〜17:00（入館16:30まで）・木曜休館</span></div>
+              <div class="museum-detail-row"><span class="d-icon">📞</span><span>0739-42-2872</span></div>
+              <div class="museum-detail-row"><span class="d-icon">🌐</span><span><a href="https://www.minakatakumagusu-kinenkan.jp/" target="_blank">公式サイトはこちら</a></span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SNS QRコード＆リンク -->
+        <div class="museum-sns-wrap">
+          <div class="museum-sns-title">📱 SNSでも熊楠を楽しもう！（QRコードをスキャン）</div>
+          <div class="museum-qr-row">
+            <div class="museum-qr-card">
+              <div class="museum-qr-icon">📷</div>
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.instagram.com/minakata_kumagusu1867/"
+                alt="Instagram QRコード"
+                onerror="this.style.display='none'"
+              >
+              <div class="museum-qr-label">Instagram</div>
+              <div class="museum-qr-handle">@minakata_kumagusu1867</div>
+            </div>
+            <div class="museum-qr-card">
+              <div class="museum-qr-icon">👍</div>
+              <img
+                src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://www.facebook.com/minakatakumagusumuseum/"
+                alt="Facebook QRコード"
+                onerror="this.style.display='none'"
+              >
+              <div class="museum-qr-label">Facebook</div>
+              <div class="museum-qr-handle">minakatakumagusumuseum</div>
+            </div>
+          </div>
+          <div class="museum-link-row">
+            <a class="museum-link-btn museum-link-shop" href="https://www.minakatakumagusu-kinenkan.jp/kannai/museum-shop" target="_blank">🛍️ グッズ販売</a>
+            <a class="museum-link-btn museum-link-blog" href="https://www.minakatakumagusu-kinenkan.jp/blog" target="_blank">📝 学術スタッフブログ</a>
+            <a class="museum-link-btn museum-link-info" href="https://www.minakatakumagusu-kinenkan.jp/info" target="_blank">📢 お知らせ・イベント一覧</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- アクセスマップ -->
+      <div class="map-wrap">
+        <div class="map-header">📍 アクセスマップ</div>
+        <iframe
+          src="https://maps.google.com/maps?q=%E5%8D%97%E6%96%B9%E7%86%8A%E6%A5%A0%E8%A8%98%E5%BF%B5%E9%A4%A8+%E7%99%BD%E6%B5%9C%E7%94%BA&hl=ja&output=embed"
+          allowfullscreen loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+
+      <div class="result-btns">
+        <button class="btn-next-level" id="btn-next-level" onclick="nextLevel()">⭐ 次のレベルへ挑戦！</button>
+        <button class="btn-retry" onclick="retryQuiz()">🔄 同じレベルでもう一度挑戦</button>
+        <button class="btn-home" onclick="goHome()">🏠 レベル選択に戻る</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>window.allQuestions=[[], [], [], [], []];</script>
+<script src='questions-l1.js'></script>
+<script src='questions-l2.js'></script>
+<script src='questions-l3.js'></script>
+<script src='questions-l4.js'></script>
+<script src='questions-l5.js'></script>
+<script>
+// ===== 問題データベース =====
+// allQuestions ha gaibufairu de teigizumi
+const levelNames = ["Lv.1 はじめて熊楠","Lv.2 熊楠の大冒険","Lv.3 知の探求者","Lv.4 熊楠通への道","Lv.5 熊楠博士"];
+const QUESTIONS_PER_GAME = 10;
+const CHOICES = ['A','B','C','D'];
+
+// ===== レベルイントロ ストーリーデータ =====
+const levelStories = [
+  {
+    episode: "EPISODE 1",
+    title: "少年熊楠、本の虫になる",
+    story: "1867年、和歌山城下に一人の少年が生まれた。南方熊楠——彼は7歳から辞書や百科事典を丸ごと書き写し始める。学校の授業よりも図書館、授業よりも標本採集。「変な子」と言われながら、それでも熊楠は止まらなかった。",
+    hook: "この少年は後に、18か国語を操り、ロンドンの大英博物館に論文を掲載し、天皇陛下に直接講義する「知の巨人」になる——",
+    teaser: "📖 このレベルでは熊楠の少年時代と基本プロフィールを10問で探検！"
+  },
+  {
+    episode: "EPISODE 2",
+    title: "世界へ飛び出した19歳",
+    story: "1887年、19歳の熊楠は単身アメリカへ渡った。大学を中退し、農場で働き、博物館に通い詰め、独学で研究を続けた。そしてロンドンへ渡ると、あの大英博物館に毎日通い、ついに世界最高峰の科学誌「Nature」に論文を掲載した。",
+    hook: "無名の日本人青年が、世界の舞台に立つ——その秘密がこのクイズに隠されている。",
+    teaser: "🌍 このレベルでは熊楠の世界での活躍を10問で追体験！"
+  },
+  {
+    episode: "EPISODE 3",
+    title: "那智の森で、神秘に出会う",
+    story: "1900年、熊楠は帰国し、熊野・那智の深い森に籠もった。そこで彼は「粘菌」と出会う——枯れ葉の下で動く不思議な生き物。分類できない、名前もない。熊楠はその一つひとつを採集し、スケッチし、世界に発信していった。",
+    hook: "やがて熊楠は「南方マンダラ」という壮大な思想を編み出す。自然と人間、宗教と科学が交差する、唯一無二の世界観——",
+    teaser: "🌿 このレベルでは粘菌・南方マンダラ・神社合祀反対運動の深い世界へ！"
+  },
+  {
+    episode: "EPISODE 4",
+    title: "田辺から、世界を動かした男",
+    story: "熊楠は和歌山県・田辺の家に籠もり、研究を続けた。外に出ない。大学に属さない。組織に入らない。それでも世界中の学者と手紙でつながり、政府の政策を変え、総理大臣や貴族を動かした——「在野の学者」の真骨頂。",
+    hook: "神社の森を守るために、熊楠は国家と戦った。その戦いの記録がここにある。",
+    teaser: "🏛️ このレベルでは熊楠の田辺時代・神社合祀反対・エコロジー活動を掘り下げ！"
+  },
+  {
+    episode: "EPISODE 5",
+    title: "天皇と出会い、伝説になった",
+    story: "1929年、昭和天皇が田辺湾を訪れた。海に浮かぶ軍艦の甲板で、熊楠は粘菌の標本72点を並べ、天皇に一つひとつ説明した。その後、天皇のご意向で神島の自然が守られた——熊楠の情熱が、日本で最初の自然保護を動かした瞬間だった。",
+    hook: "そして1941年、74歳で熊楠は静かに目を閉じた。しかし彼の研究と思想は今も生きている——",
+    teaser: "🔬 このレベルでは熊楠の晩年・御進講・南方マンダラの哲学まで最深部へ！"
+  }
+];
+
+// ===== トリビアデータ（10種類、問題ごとにランダム・重複なし） =====
+const levelTrivia = [
+  // L1: 少年・基本
+  ["熊楠は7歳の頃、百科事典をまるごと書き写してしまいました。",
+   "少年時代の熊楠は学校よりも図書館が大好きで、先生を困らせていました。",
+   "熊楠が生涯に書いた手紙の数は数千通以上といわれています。",
+   "熊楠の父・弥兵衛は金物商で、当時の和歌山でも裕福な家庭でした。",
+   "熊楠は小学校に入る前から、難しい漢籍を読みこなしていました。",
+   "熊楠は幼い頃から記憶力が抜群で、一度読んだ本をほぼ完全に暗記していたといわれます。",
+   "熊楠は19歳でアメリカへ渡りましたが、最初は英語がほとんど話せませんでした。",
+   "熊楠は生涯に何万枚ものスケッチを描き、現在も南方熊楠記念館に保管されています。",
+   "熊楠の故郷・和歌山は紀伊半島の豊かな自然に囲まれており、幼い頃から生き物と親しんでいました。",
+   "熊楠は和歌山中学在学中に、博物学の先生・鳥山啓から生き物の面白さを教わりました。"],
+  // L2: 渡航・ロンドン
+  ["熊楠はロンドンで孫文（中国革命の父）と出会い、友人になりました。",
+   "大英博物館の読書室で熊楠は毎日のように本を読み漁り、司書に驚かれました。",
+   "Nature誌に掲載された熊楠の論文数は51本以上にのぼります。",
+   "熊楠はアメリカで農場労働もしながら独学で研究を続けました。",
+   "ロンドン時代、熊楠は英語・ラテン語・アラビア語など多言語を同時に習得していました。",
+   "ロンドン時代、熊楠は図書館の本を端から端まで読み、司書に「この人は本物だ」と驚かれました。",
+   "熊楠がNature誌に投稿した論文の多くは、日本の民話や植物についての英語解説でした。",
+   "熊楠はアメリカ滞在中、標本採集と研究記録を一日も欠かさず続けていたといわれています。",
+   "渡航費が尽きると、熊楠は農場や博物館でアルバイトをしながら研究を続けました。",
+   "熊楠はロンドンで外国の研究者に積極的に話しかけ、世界中の知識人と交流しました。"],
+  // L3: 那智・南方マンダラ・神社
+  ["粘菌は動物でも植物でもない不思議な生き物で、熊楠が最も愛した研究対象でした。",
+   "南方マンダラは宇宙の法則を表す熊楠独自の思想図で、仏教と科学が融合しています。",
+   "熊楠は神社合祀反対の意見書を政府に送り続け、ついに政策を変えさせました。",
+   "熊楠が採集した粘菌の標本は、今も南方熊楠記念館に保管されています。",
+   "「十二支考」は世界中の文献を使った比較民俗学の大著で、今も研究者に読まれています。",
+   "那智での生活で熊楠は深夜も森に入り、月明かりの下で粘菌を採集していました。",
+   "熊楠は神社合祀反対運動で、自分で調査した生態データを証拠として政府に提出しました。",
+   "熊楠の「十二支考」は、ウサギ・ネコ・ヘビなど各干支の動物にまつわる世界の伝説を集めた大著です。",
+   "熊楠は民俗学・博物学・宗教学・言語学など10以上の学問分野に業績を残しています。",
+   "土宜法龍への書簡に描かれた「南方マンダラ」は、現在の複雑系科学にも通じるとして注目されています。"],
+  // L4: 田辺・在野
+  ["熊楠は大学に属さず、生涯「在野の学者」として活動しました。",
+   "熊楠の田辺の自宅には、世界中の学者から手紙が届き続けました。",
+   "熊楠が集めた粘菌標本は4,000点以上。田辺の土蔵に今も保管されています。",
+   "熊楠が神社合祀に反対したのは、神社の森が生態系を守る役割をしていたからです。",
+   "熊楠の「南方邸」は今も田辺市に残り、見学することができます。",
+   "田辺の熊楠の家は「南方邸」と呼ばれ、世界中から手紙が届く「知の城」でした。",
+   "熊楠は「世界で最も変わった学者の一人」と外国の学術誌に紹介されたこともあります。",
+   "神社合祀令が出た後、熊楠は3年間で政府への意見書を何十通も書き続けました。",
+   "熊楠の息子・熊弥が病気になった3年間、熊楠は門を閉めて外部との連絡を断っていました。",
+   "熊楠は田辺の鎮守の森で採集した粘菌を、顕微鏡で観察してスケッチし続けました。"],
+  // L5: 晩年・御進講・哲学
+  ["昭和天皇との御進講後、天皇のご意向で田辺湾の神島が保護されました。",
+   "熊楠は生涯で18か国語以上を学んだとされ、21か国語という説もあります。",
+   "南方熊楠記念館には直筆のノートや手紙、粘菌標本が今も展示されています。",
+   "熊楠は「ミナカテルラ・ロンギフィラ」という粘菌に自分の名前をつけてもらいました。",
+   "熊楠の研究は現代のエコロジー（生態学）の先駆けとして再評価されています。",
+   "昭和天皇は熊楠の粘菌研究に強い関心を示し、御進講後も書簡でやり取りしたといわれます。",
+   "南方マンダラは今でも思想家・哲学者の間で研究されており、新しい解釈が生まれています。",
+   "熊楠の直筆ノートは独特の文字で書かれており、解読に専門家が何年もかけることがあります。",
+   "熊楠の粘菌研究は、世界の菌類学・生態学の発展に大きく貢献したと評価されています。",
+   "熊楠が1941年に74歳で亡くなる直前まで、研究のノートを書き続けていたといわれています。"]
+];
+
+// ===== ストリーク称号 =====
+const streakTitles = {3:'🔥 3連続正解！熊楠も「さすが！」と言いそう',5:'⚡ 5連続！これは本物の熊楠通かも！',8:'🌟 8連続！熊楠の研究魂が宿っています！',10:'🏆 全問連続正解！あなたは熊楠の生まれ変わり！'};
+
+let currentLevel=0, questions=[], currentIndex=0, score=0, streak=0, maxStreak=0;
+let triviaQueue=[];
+
+function shuffle(arr){ const a=[...arr]; for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; }
+function plain(s){ const d=document.createElement('div'); d.innerHTML=s; d.querySelectorAll('rt').forEach(rt=>rt.remove()); return d.textContent||d.innerText||''; }
+
+function startQuiz(level){
+  currentLevel=level;
+  const _cont=document.querySelector('.container');
+  _cont.className=_cont.className.replace(/\bquiz-lv-\d\b/g,'').trim();
+  _cont.classList.add('quiz-lv-'+(level+1));
+  // イントロ画面を表示
+  const s=levelStories[level];
+  document.getElementById('intro-episode-label').textContent=s.episode;
+  document.getElementById('intro-title').textContent=s.title;
+  document.getElementById('intro-story').textContent=s.story;
+  document.getElementById('intro-hook').textContent=s.hook;
+  document.getElementById('intro-teaser').textContent=s.teaser;
+  showScreen('screen-intro');
+}
+
+function proceedToQuiz(){
+  const pool=allQuestions[currentLevel];
+  questions=shuffle(pool).slice(0,QUESTIONS_PER_GAME).map(q=>{
+    const ch=q.choices||q.c;
+    const correctText=ch[q.correct!==undefined?q.correct:q.a];
+    const shuffled=shuffle(ch);
+    return { q:q.q, choices:shuffled, correct:shuffled.indexOf(correctText), feedback:q.feedback||q.f };
+  });
+  currentIndex=0; score=0; streak=0; maxStreak=0;
+  // トリビアキューを初期化（シャッフル済み、重複なし）
+  const tp=levelTrivia[currentLevel];
+  triviaQueue=shuffle([...Array(tp.length).keys()]);
+  document.getElementById('quiz-lv-tag').textContent=levelNames[currentLevel];
+  document.getElementById('streak-badge').style.display='none';
+  document.getElementById('streak-msg').style.display='none';
+  showScreen('screen-quiz');
+  renderQ();
+}
+
+function renderQ(){
+  const q=questions[currentIndex];
+  const total=QUESTIONS_PER_GAME;
+  document.getElementById('quiz-num').textContent=`${currentIndex+1} / ${total}`;
+  document.getElementById('progress-fill').style.width=`${(currentIndex/total)*100}%`;
+  document.getElementById('q-text').innerHTML=q.q;
+  const el=document.getElementById('choices');
+  el.innerHTML='';
+  q.choices.forEach((c,i)=>{
+    const btn=document.createElement('button');
+    btn.className='c-btn';
+    btn.innerHTML=`<span class="c-mark">${CHOICES[i]}</span><span>${plain(c)}</span>`;
+    btn.onclick=()=>answer(i);
+    el.appendChild(btn);
+  });
+  const fb=document.getElementById('fb-box');
+  fb.style.display='none'; fb.className='fb-box';
+  document.getElementById('next-btn').style.display='none';
+  document.getElementById('streak-msg').style.display='none';
+}
+
+function answer(chosen){
+  const q=questions[currentIndex];
+  const btns=document.querySelectorAll('.c-btn');
+  btns.forEach(b=>b.disabled=true);
+  const fb=document.getElementById('fb-box');
+  const streakBadge=document.getElementById('streak-badge');
+  const streakMsgEl=document.getElementById('streak-msg');
+
+  if(chosen===q.correct){
+    score++;
+    streak++;
+    if(streak>maxStreak) maxStreak=streak;
+    btns[chosen].classList.add('correct');
+    fb.className='fb-box correct';
+    const okMsg=['✅ 正解！','✅ 正解！その通り！','✅ 正解！さすが！','✅ 正解！熊楠も喜んでいる！'];
+    document.getElementById('fb-title').textContent=okMsg[Math.floor(Math.random()*okMsg.length)];
+    // ストリーク表示
+    if(streak>=2){
+      document.getElementById('streak-num').textContent=streak;
+      streakBadge.style.display='inline-flex';
+      const title=streakTitles[streak];
+      if(title){ streakMsgEl.textContent=title; streakMsgEl.style.display='block'; }
+      else { streakMsgEl.style.display='none'; }
+    }
+  } else {
+    streak=0;
+    streakBadge.style.display='none';
+    streakMsgEl.style.display='none';
+    btns[chosen].classList.add('incorrect'); btns[q.correct].classList.add('correct');
+    fb.className='fb-box incorrect';
+    const enc=['😢 残念！','💡 惜しい！','🌿 もう少し！','😊 次は大丈夫！','✨ 惜しかった！'];
+    document.getElementById('fb-title').textContent=enc[Math.floor(Math.random()*enc.length)]+'　正解は「'+plain(q.choices[q.correct])+'」';
+  }
+  document.getElementById('fb-text').innerHTML=q.feedback;
+  // トリビア表示（シャッフルキューから順番に取り出し、重複なし）
+  const triviaPool=levelTrivia[currentLevel];
+  const triviaEl=document.getElementById('fb-trivia');
+  const triviaText=document.getElementById('fb-trivia-text');
+  if(triviaPool&&triviaPool.length>0){
+    if(triviaQueue.length===0) triviaQueue=shuffle([...Array(triviaPool.length).keys()]);
+    const idx=triviaQueue.shift();
+    triviaText.textContent=triviaPool[idx];
+    triviaEl.style.display='block';
+  }
+  fb.style.display='block';
+  const nb=document.getElementById('next-btn');
+  nb.style.display='block';
+  nb.textContent = currentIndex >= QUESTIONS_PER_GAME - 1 ? '🏆 いよいよ結果発表！' : '次の問題へ →';
+}
+
+function nextQuestion(){ currentIndex++; currentIndex>=QUESTIONS_PER_GAME ? showResult() : renderQ(); }
+
+function getBadge(score,level){
+  const pct=score/QUESTIONS_PER_GAME;
+  if(pct===1.0) return {icon:'🏆',title:['熊楠の申し子','世界を歩いた熊楠通','熊野の知の探求者','在野の学者継承者','熊楠博士の後継者'][level],msg:'満点！完璧です！熊楠博士もきっと喜んでいます！',encourage:level<4?'この調子でぜひ次のレベルにも挑戦してみてください！':'全5レベル制覇への挑戦、続けましょう！'};
+  if(pct>=0.8) return {icon:'🥇',title:'熊楠に魅せられし者',msg:'素晴らしい！熊楠の世界をよく知っていますね！',encourage:'あと少しで満点です。問題はランダムで変わるので、もう一度挑戦してみましょう！'};
+  if(pct>=0.6) return {icon:'🥈',title:'熊楠の入り口に立つ者',msg:'よくできました！少しずつ熊楠通に近づいています！',encourage:'解説をヒントにもう一度挑戦すれば、きっともっと上を目指せます！'};
+  if(pct>=0.4) return {icon:'🥉',title:'熊楠に興味を持ちし者',msg:'熊楠のことが少しわかってきましたね！',encourage:'解説をじっくり読んで、また挑戦してみてください。きっと伸びます！'};
+  return {icon:'🌿',title:'これから熊楠を学ぶ者',msg:'熊楠の世界への第一歩を踏み出しました！',encourage:'繰り返し挑戦するうちに必ず上達します。一緒に熊楠を楽しみましょう！'};
+}
+
+function showResult(){
+  document.getElementById('progress-fill').style.width='100%';
+  const b=getBadge(score,currentLevel);
+  const pct=Math.round((score/QUESTIONS_PER_GAME)*100);
+  document.getElementById('result-icon').textContent=b.icon;
+  document.getElementById('result-score-num').textContent=score;
+  document.getElementById('result-badge').textContent=b.title;
+  // 熊楠度メーター
+  document.getElementById('kumagusu-pct').textContent=pct+'%';
+  setTimeout(()=>{ document.getElementById('kumagusu-fill').style.width=pct+'%'; },100);
+  // 最大ストリーク表示
+  const msEl=document.getElementById('max-streak-info');
+  if(maxStreak>=3) msEl.textContent='🔥 最大連続正解: '+maxStreak+'問！';
+  else if(maxStreak>=2) msEl.textContent='連続正解: '+maxStreak+'問';
+  else msEl.textContent='';
+  document.getElementById('result-msg').innerHTML=`<strong>${b.msg}</strong><br><br>${QUESTIONS_PER_GAME}問中 <strong>${score}問正解</strong>でした。<br><br><em>${b.encourage}</em><br><br>南方熊楠は「知ることの喜び」を生涯追い求めた人物です。ぜひ南方熊楠記念館で本物の資料に触れてみてください。`;
+  const nb=document.getElementById('btn-next-level');
+  if(currentLevel<4){ nb.style.display='block'; nb.textContent='⭐ レベル'+(currentLevel+2)+'に挑戦！'; }
+  else{ nb.style.display='none'; }
+  showScreen('screen-result');
+}
+
+function nextLevel(){ startQuiz(currentLevel+1); }
+
+function retryQuiz(){ proceedToQuiz(); }
+function goHome(){ const _c=document.querySelector('.container'); _c.classList.remove('quiz-lv-1','quiz-lv-2','quiz-lv-3','quiz-lv-4','quiz-lv-5'); showScreen('screen-level'); }
+function showScreen(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); window.scrollTo(0,0); }
+</script>
+</body>
+</html>
